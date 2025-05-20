@@ -1,0 +1,229 @@
+/* Reset e configurações básicas */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s; /* Transição suave para o modo escuro */
+}
+
+/* Estilos do corpo */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Cabeçalho principal */
+header {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #2c5c3b, #3a7d44, #4c9e5a);
+    color: white;
+}
+
+/* Barra de navegação - sticky */
+nav {
+    display: flex;
+    background-color: #1e3f29;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Links da navegação */
+nav a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Efeito hover nos links */
+nav a:hover {
+    background-color: #4c9e5a;
+    color: white;
+}
+
+/* Container principal flexível */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Barra lateral */
+aside {
+    flex: 30%;
+    background-color: #e9ecef;
+    padding: 20px;
+}
+
+/* Conteúdo principal */
+section {
+    flex: 70%;
+    background-color: white;
+    padding: 20px;
+}
+
+/* Imagens de exemplo */
+.article-image {
+    background-color: #adb5bd;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 15px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    background-size: cover;
+    background-position: center;
+}
+
+/* IDs específicos para imagens */
+#cannabis-plant {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/3676962/pexels-photo-3676962.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+}
+
+#legal-status {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/7668045/pexels-photo-7668045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    height: 60px;
+}
+
+#medical-use {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/7598436/pexels-photo-7598436.jpeg');
+    height: 60px;
+}
+
+#recreational-use {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/8140312/pexels-photo-8140312.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    height: 60px;
+}
+
+#medical-benefits {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/7852731/pexels-photo-7852731.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+}
+
+#health-risks {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/8139606/pexels-photo-8139606.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+}
+
+#legalization-debate {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/8139122/pexels-photo-8139122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+}
+
+/* Rodapé */
+footer {
+    padding: 30px;
+    text-align: center;
+    background-color: #1e3f29;
+    color: white;
+}
+
+/* Estilos para telas menores que 700px */
+@media screen and (max-width: 700px) {
+    main, nav {
+        flex-direction: column;
+    }
+}
+
+/* Estilos para o modo escuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode aside {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+body.dark-mode section {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+body.dark-mode .article-image {
+    background-color: #333;
+    color: #ccc;
+}
+
+/* Botão de modo escuro */
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #1e3f29;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+body.dark-mode .dark-mode-toggle {
+    background-color: #f8f9fa;
+    color: #1e3f29;
+}
+
+/* Estilos para cards */
+.card {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .card {
+    background-color: #2d2d2d;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Estilos para títulos */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 15px;
+    color: #1e3f29;
+}
+
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode h4, 
+body.dark-mode h5, 
+body.dark-mode h6 {
+    color: #4c9e5a;
+}
+
+/* Estilos para links */
+a {
+    color: #2c5c3b;
+    text-decoration: none;
+}
+
+body.dark-mode a {
+    color: #4c9e5a;
+}
+
+/* Banner de aviso responsivo */
+.responsive-banner {
+    background-color: #ffc107;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Listas */
+ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+li {
+    margin-bottom: 8px;
+}
