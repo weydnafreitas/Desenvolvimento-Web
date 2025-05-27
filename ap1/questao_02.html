@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tabela de Produtos</title>
+
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+
+    thead {
+      background-color: #f0f0f0;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    tbody tr:hover {
+      background-color: #e0f7fa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome do Produto</th>
+        <th>Categoria</th>
+        <th>Preço (R$)</th>
+        <th>Estoque</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>001</td>
+        <td>Mario + Rabbids Sparks of Hope</td>
+        <td>Jogo</td>
+        <td>200,95</td>
+        <td>10</td>
+      </tr>
+
+      <tr>
+        <td>002</td>
+        <td>Teclado Gamer</td>
+        <td>Periféricos</td>
+        <td>129,90</td>
+        <td>15</td>
+      </tr>
+
+      <tr>
+        <td>003</td>
+        <td>Minecraft Legends Edição Deluxe</td>
+        <td>Jogo</td>
+        <td>60,99</td>
+        <td>8</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
