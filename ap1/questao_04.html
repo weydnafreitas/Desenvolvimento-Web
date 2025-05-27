@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Notificação Fixa</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    .notification-card {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 250px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .card-content {
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+  
+<body>
+
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora id voluptas velit soluta reiciendis quidem neque quaerat, qui omnis dolorem corrupti animi, odit quia exercitationem beatae illum, hic voluptatibus similique.</p>
+
+  <div class="notification-card" id="card">
+    
+    <div class="card-header">
+      <button class="close-btn" onclick="fecharCard()">X</button>
+    </div>
+    
+    <div class="card-content">
+      <h3>Novidade!</h3>
+      <p>Confira nossos novos produtos.</p>
+    </div>
+    
+  </div>
+
+  <script>
+    function fecharCard() {
+      document.getElementById("card").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
