@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COVID19 Brasil - Estados</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        .above-average { background-color: #f8d7da; }
+        tfoot td { font-weight: bold; background-color: #f1f1f1; }
+    </style>
+</head>
+<body>
+    <h1>COVID19 Brasil - Estados</h1>
+    <table id="covidTable">
+        <thead>
+            <tr>
+                <th>Nome do Estado</th>
+                <th>Abreviação</th>
+                <th>Número de Casos</th>
+                <th>Número de Suspeitos</th>
+                <th>Número de Falecimentos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="5">Carregando...</td></tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">Médias</td>
+                <td id="mediaCasos"></td>
+                <td id="mediaSuspeitos"></td>
+                <td id="mediaObitos"></td>
+            </tr>
+            <tr><td colspan="5" id="maiorRelacao"></td></tr>
+            <tr><td colspan="5" id="menorRelacao"></td></tr>
+        </tfoot>
+    </table>
+
+    <script>
+        fetch('https://covid19-brazil-api.vercel.app/api/report/v1')
+            .then(response => response.json())
+            .then(data => {
+                const estados = data.data;
+                const tbody = document.querySelector('#covidTable tbody');
+                tbody.innerHTML = '';
+
+                let somaCasos = 0, somaSuspeitos = 0, somaObitos = 0;
+                let maiorRelacao = { estado: '', valor: 0 };
+                let menorRelacao = { estado: '', valor: Infinity };
+
+                estados.forEach(estado => {
+                    somaCasos += Number(estado.cases) || 0;
+                    somaSuspeitos += Number(estado.suspects) || 0;
+                    somaObitos += Number(estado.deaths) || 0;
+                });
+
+                const mediaCasos = somaCasos / estados.length;
+                const mediaSuspeitos = somaSuspeitos / estados.length;
+                const mediaObitos = somaObitos / estados.length;
+
+                estados.forEach(estado => {
+                    const casos = Number(estado.cases) || 0;
+                    const obitos = Number(estado.deaths) || 0;
+                    const relacao = obitos > 0 ? casos / obitos : 0;
+
+                    if (relacao > maiorRelacao.valor) {
+                        maiorRelacao = { estado: estado.state, valor: relacao };
+                    }
+                    if (obitos > 0 && relacao < menorRelacao.valor) {
+                        menorRelacao = { estado: estado.state, valor: relacao };
+                    }
+
+                    const tr = document.createElement('tr');
+                    if (obitos > mediaObitos) {
+                        tr.classList.add('above-average');
+                    }
+                    tr.innerHTML = `
+                        <td>${estado.state}</td>
+                        <td>${estado.uf}</td>
+                        <td>${casos.toLocaleString()}</td>
+                        <td>${(Number(estado.suspects) || 0).toLocaleString()}</td>
+                        <td>${obitos.toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('mediaCasos').textContent = mediaCasos.toFixed(0);
+                document.getElementById('mediaSuspeitos').textContent = mediaSuspeitos.toFixed(0);
+                document.getElementById('mediaObitos').textContent = mediaObitos.toFixed(0);
+
+                document.getElementById('maiorRelacao').textContent = `Maior relação Casos/Falecimentos: ${maiorRelacao.estado} (${maiorRelacao.valor.toFixed(2)})`;
+                document.getElementById('menorRelacao').textContent = `Menor relação Casos/Falecimentos: ${menorRelacao.estado} (${menorRelacao.valor.toFixed(2)})`;
+            })
+            .catch(error => {
+                document.querySelector('#covidTable tbody').innerHTML = `<tr><td colspan="5">Erro ao carregar os dados: ${error}</td></tr>`;
+            });
+    </script>
+</body>
+</html>
