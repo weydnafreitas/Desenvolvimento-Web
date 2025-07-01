@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COVID19 Global - Todos os Países</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        .above-average { background-color: #f8d7da; }
+        .brazil-row { background-color: #fff3cd; font-weight: bold; }
+        tfoot td { font-weight: bold; background-color: #f1f1f1; }
+        .highlight { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>COVID19 Global - Todos os Países</h1>
+    <table id="covidTable">
+        <thead>
+            <tr>
+                <th>Nome do País</th>
+                <th>Abreviação</th>
+                <th>Número de Casos</th>
+                <th>Número de Suspeitos*</th>
+                <th>Número de Falecimentos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="5">Carregando...</td></tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">Médias</td>
+                <td id="mediaCasos"></td>
+                <td id="mediaSuspeitos"></td>
+                <td id="mediaObitos"></td>
+            </tr>
+            <tr><td colspan="5" id="maiorRelacao" class="highlight"></td></tr>
+            <tr><td colspan="5" id="menorRelacao" class="highlight"></td></tr>
+            <tr><td colspan="5" style="font-size: 0.8em;">*Nota: Dados de suspeitos são estimativas baseadas em casos ativos</td></tr>
+        </tfoot>
+    </table>
+
+    <script>
+        fetch('https://disease.sh/v3/covid-19/countries')
+            .then(response => response.json())
+            .then(data => {
+                const paises = data;
+                const tbody = document.querySelector('#covidTable tbody');
+                tbody.innerHTML = '';
+
+                let somaCasos = 0, somaSuspeitos = 0, somaObitos = 0;
+                let contador = 0;
+                let maiorRelacao = { pais: '', valor: 0 };
+                let menorRelacao = { pais: '', valor: Infinity };
+
+                // Primeiro calculamos as somas totais
+                paises.forEach(pais => {
+                    const casos = Number(pais.cases) || 0;
+                    const obitos = Number(pais.deaths) || 0;
+                    // Estimativa de suspeitos (casos ativos)
+                    const suspeitos = Number(pais.active) || 0;
+                    
+                    somaCasos += casos;
+                    somaSuspeitos += suspeitos;
+                    somaObitos += obitos;
+                    contador++;
+                });
+
+                const mediaCasos = somaCasos / contador;
+                const mediaSuspeitos = somaSuspeitos / contador;
+                const mediaObitos = somaObitos / contador;
+
+                // Agora processamos cada país
+                paises.forEach(pais => {
+                    const casos = Number(pais.cases) || 0;
+                    const obitos = Number(pais.deaths) || 0;
+                    // Estimativa de suspeitos (casos ativos)
+                    const suspeitos = Number(pais.active) || 0;
+                    const relacao = obitos > 0 ? casos / obitos : 0;
+
+                    if (relacao > maiorRelacao.valor) {
+                        maiorRelacao = { pais: pais.country, valor: relacao };
+                    }
+                    if (obitos > 0 && relacao < menorRelacao.valor) {
+                        menorRelacao = { pais: pais.country, valor: relacao };
+                    }
+
+                    const tr = document.createElement('tr');
+                    
+                    // Destacar linha do Brasil
+                    if (pais.country === 'Brazil') {
+                        tr.classList.add('brazil-row');
+                    }
+                    
+                    // Destacar países com mortes acima da média (requisito 3)
+                    if (obitos > mediaObitos) {
+                        tr.classList.add('above-average');
+                    }
+                    
+                    tr.innerHTML = `
+                        <td>${pais.country}</td>
+                        <td>${pais.countryInfo.iso3 || 'N/A'}</td>
+                        <td>${casos.toLocaleString()}</td>
+                        <td>${suspeitos.toLocaleString()}</td>
+                        <td>${obitos.toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Requisito 2: Mostrar médias
+                document.getElementById('mediaCasos').textContent = mediaCasos.toFixed(0);
+                document.getElementById('mediaSuspeitos').textContent = mediaSuspeitos.toFixed(0);
+                document.getElementById('mediaObitos').textContent = mediaObitos.toFixed(0);
+
+                // Requisito 4: Maior relação Casos/Falecimentos
+                document.getElementById('maiorRelacao').textContent = 
+                    `Maior relação Casos/Falecimentos: ${maiorRelacao.pais} (${maiorRelacao.valor.toFixed(2)})`;
+                
+                // Requisito 5: Menor relação Casos/Falecimentos
+                document.getElementById('menorRelacao').textContent = 
+                    `Menor relação Casos/Falecimentos: ${menorRelacao.pais} (${menorRelacao.valor.toFixed(2)})`;
+            })
+            .catch(error => {
+                document.querySelector('#covidTable tbody').innerHTML = `<tr><td colspan="5">Erro ao carregar os dados: ${error}</td></tr>`;
+            });
+    </script>
+</body>
+</html>
