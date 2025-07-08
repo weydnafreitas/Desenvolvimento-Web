@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Produtos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    thead {
+      background-color: #f4f4f4;
+    }
+    .acima-media {
+      background-color: #ffffcc;
+    }
+    .mais-caro {
+      background-color: #ffd1d1;
+      font-weight: bold;
+    }
+    .mais-barato {
+      background-color: #d1ffd1;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Produtos</h1>
+  <div id="mensagem"></div>
+  <div id="tabela-container"></div>
+
+  <script>
+    function gerarProdutos() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const numero = Math.floor(Math.random() * 100);
+          if (numero % 2 === 0) {
+            const produtos = [
+              { id: 1, nome: "Notebook", tipo: "Eletrônico", preco: 4000 },
+              { id: 2, nome: "Smartphone", tipo: "Eletrônico", preco: 2500 },
+              { id: 3, nome: "Mesa", tipo: "Móvel", preco: 700 },
+              { id: 4, nome: "Cadeira", tipo: "Móvel", preco: 300 },
+              { id: 5, nome: "Geladeira", tipo: "Eletrodoméstico", preco: 3500 },
+              { id: 6, nome: "Fone de Ouvido", tipo: "Eletrônico", preco: 500 },
+              { id: 7, nome: "TV", tipo: "Eletrônico", preco: 3200 },
+              { id: 8, nome: "Liquidificador", tipo: "Eletrodoméstico", preco: 250 },
+              { id: 9, nome: "Fogão", tipo: "Eletrodoméstico", preco: 1800 },
+              { id: 10, nome: "Micro-ondas", tipo: "Eletrodoméstico", preco: 1200 }
+            ];
+            resolve(produtos);
+          } else {
+            reject({ res: "ERROR", msg: "ERRO NO SISTEMA" });
+          }
+        }, 4000);
+      });
+    }
+
+    async function mostrarProdutos() {
+      try {
+        document.getElementById("mensagem").textContent = "Carregando produtos...";
+        const produtos = await gerarProdutos();
+
+        // Calcular estatísticas
+        const precos = produtos.map(p => p.preco);
+        const media = precos.reduce((a, b) => a + b, 0) / produtos.length;
+        const maisCaro = Math.max(...precos);
+        const maisBarato = Math.min(...precos);
+
+        // Montar tabela
+        let tabela = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Preço</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        produtos.forEach(produto => {
+          let classe = "";
+          if (produto.preco > media) classe += "acima-media ";
+          if (produto.preco === maisCaro) classe += "mais-caro ";
+          if (produto.preco === maisBarato) classe += "mais-barato ";
+
+          tabela += `
+            <tr class="${classe.trim()}">
+              <td>${produto.id}</td>
+              <td>${produto.nome}</td>
+              <td>${produto.tipo}</td>
+              <td>R$ ${produto.preco.toFixed(2)}</td>
+            </tr>
+          `;
+        });
+
+        tabela += `
+            </tbody>
+          </table>
+          <p><strong>Média de Preço:</strong> R$ ${media.toFixed(2)}</p>
+        `;
+
+        document.getElementById("mensagem").textContent = "";
+        document.getElementById("tabela-container").innerHTML = tabela;
+      } catch (erro) {
+        document.getElementById("mensagem").innerHTML = `<p style="color:red;">${erro.msg}</p>`;
+      }
+    }
+
+    mostrarProdutos();
+  </script>
+</body>
+</html>
