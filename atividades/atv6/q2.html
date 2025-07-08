@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo da Memória (com Emojis)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #444;
+      color: white;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .card.revealed {
+      background-color: #fff;
+      color: #000;
+      cursor: default;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo da Memória</h1>
+  <div id="game-board" class="board"></div>
+  <p>Pontos: <span id="score">0</span></p>
+
+  <script>
+    const board = document.getElementById("game-board");
+    const scoreDisplay = document.getElementById("score");
+
+    const symbols = ['🍎','🚗','🐶','🎵','🌟','🍕','⚽','📚'];
+    const cards = [...symbols, ...symbols].sort(() => 0.5 - Math.random());
+
+    let revealedCards = [];
+    let matchedCards = [];
+    let score = 0;
+
+    // Criar as cartas
+    cards.forEach((symbol, index) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.dataset.symbol = symbol;
+      card.dataset.index = index;
+      card.textContent = ""; // começa escondido
+
+      card.addEventListener("click", () => handleCardClick(card));
+      board.appendChild(card);
+    });
+
+    function handleCardClick(card) {
+      if (card.classList.contains("revealed") || revealedCards.length === 2) return;
+
+      card.classList.add("revealed");
+      card.textContent = card.dataset.symbol;
+      revealedCards.push(card);
+
+      if (revealedCards.length === 2) {
+        const [first, second] = revealedCards;
+        if (first.dataset.symbol === second.dataset.symbol) {
+          matchedCards.push(first, second);
+          score++;
+          scoreDisplay.textContent = score;
+          revealedCards = [];
+
+          if (matchedCards.length === cards.length) {
+            setTimeout(() => alert("Parabéns! Você completou o jogo!"), 300);
+          }
+        } else {
+          setTimeout(() => {
+            first.classList.remove("revealed");
+            second.classList.remove("revealed");
+            first.textContent = "";
+            second.textContent = "";
+            revealedCards = [];
+          }, 1000);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
